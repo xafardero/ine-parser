@@ -3,12 +3,31 @@
 namespace Xarser;
 
 use SplFileObject;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class ParserMunicipios
+class ParserMunicipios extends Command
 {
-    public function execute($filename)
+    protected function configure()
     {
-        $file = new SplFileObject($filename);
+        $this
+            // the name of the command (the part after "bin/console")
+            ->setName('app:parse-ine')
+            // the short description shown while running "php bin/console list"
+            ->setDescription('Parses de whole ine.')
+            // the "--help" option
+            ->setHelp('This command allows you to create a user...')
+        ;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $file = new SplFileObject(__DIR__.'/../var/TRAMOS-NAL.F161231');
 
         $postalCodes = [];
 
@@ -63,7 +82,9 @@ class ParserMunicipios
             }
         }
 
-        return $this->removeDuplicates($postalCodes);
+        $return = $this->removeDuplicates($postalCodes);
+
+        (new FileGenerator)->execute(__DIR__.'/../var/codigos_postales.csv', $return);
     }
 
     private function removeDuplicates($postalCodes)
