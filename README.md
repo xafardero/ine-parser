@@ -1,17 +1,17 @@
-#Relacion de codigos postales y ines.
+# Relacion de codigos postales y ines.
 
-##Requiere: 
+## Requiere: 
 [Descargar](http://www.ine.es/ss/Satellite?L=es_ES&c=Page&cid=1254735624326&p=1254735624326&pagename=ProductosYServicios%2FPYSLayout) callejero del censo electoral del INE, descomprimirlo i guardar el fichero aqui:
 ```
 var/TRAMOS-NAL.F161231
 ```
-##uso:
+## Uso:
 ```
 composer install
 php bin/console.php app:parse-ine
 ```
 
-##Output:
+## Output:
 Ejemplo del CSV:
 ```
 ['province_id' => '01','ine' => '010014','postal_code' => '01240', 'name' => 'ALEGRIA-DULANTZI'],
