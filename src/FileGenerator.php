@@ -4,7 +4,7 @@ namespace Xarser;
 
 class FileGenerator
 {
-    public function execute($file, $rows)
+    public function execute($file, $rows): void
     {
         $current = '';
 
@@ -18,5 +18,4 @@ class FileGenerator
 
         file_put_contents($file, utf8_encode($current));
     }
-
 }

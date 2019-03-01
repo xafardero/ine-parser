@@ -1,2 +1,5 @@
 /vendor
 /var/TRAMOS-NAL.F161231
+.idea/
+/var/
+.DS_Store

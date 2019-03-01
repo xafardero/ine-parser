@@ -1,33 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace Xarser;
 
 use SplFileObject;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
-class ParserMunicipios extends Command
+class IneMunicipalityReader implements MunicipalityReaderInterface
 {
-    protected function configure()
-    {
-        $this
-            // the name of the command (the part after "bin/console")
-            ->setName('app:parse-ine')
-            // the short description shown while running "php bin/console list"
-            ->setDescription('Parses de whole ine.')
-            // the "--help" option
-            ->setHelp('This command allows you to create a user...')
-        ;
-    }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function read(string $filename): array
     {
-        $file = new SplFileObject(__DIR__.'/../var/TRAMOS-NAL.F161231');
+        $file = new SplFileObject(__DIR__.$filename);
 
         $postalCodes = [];
 
@@ -82,25 +65,20 @@ class ParserMunicipios extends Command
             }
         }
 
-        $return = $this->removeDuplicates($postalCodes);
-
-        (new FileGenerator)->execute(__DIR__.'/../var/codigos_postales.csv', $return);
+        return $this->removeDuplicates($postalCodes);
     }
 
-    private function removeDuplicates($postalCodes)
+    protected function getDataRow(SplFileObject $file): string
+    {
+        return $file->fgets();
+    }
+
+
+    private function removeDuplicates(array $postalCodes): array
     {
         return array_map(
             "unserialize",
             array_unique(array_map("serialize", $postalCodes))
         );
-    }
-
-    /**
-     * @param $file
-     * @return mixed
-     */
-    protected function getDataRow($file)
-    {
-        return $file->fgets();
     }
 }
