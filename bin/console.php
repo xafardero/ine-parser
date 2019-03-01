@@ -3,10 +3,10 @@
 require 'vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use Xarser\ParserMunicipios;
+use Xarser\GenerateMunicipalities;
 
 ini_set('memory_limit', '3G');
 
 $application = new Application();
-$application->add(new ParserMunicipios());
+$application->add(new GenerateMunicipalities());
 $application->run();

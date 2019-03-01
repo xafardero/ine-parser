@@ -1,24 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace Xarser;
 
-
-use Exception;
-
-class Ine
+final class Ine
 {
     private $ine;
 
-    public function __construct(String $municipioCode)
+    public function __construct(string $municipalityCode)
     {
-//        if (!empty($municipioCode)) {
-//            throw new Exception('Empty code');
-//        }
-        $controlDigit = $this->generateControlDigit($municipioCode);
-        $this->ine = $municipioCode . $controlDigit;
+        $controlDigit = $this->generateControlDigit($municipalityCode);
+        $this->ine = $municipalityCode . $controlDigit;
     }
 
-    private function generateControlDigit($municipioCode)
+    private function generateControlDigit($municipalityCode): ?int
     {
         $magic = [
             'A' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -30,7 +25,7 @@ class Ine
         $sum = 0;
 
         foreach($pattern as $key) {
-            $sum += $magic[$key][$municipioCode[$i]];
+            $sum += $magic[$key][$municipalityCode[$i]];
             $i++;
         }
 
@@ -63,12 +58,7 @@ class Ine
         }
     }
 
-    public function __toString()
-    {
-        return $this->ine;
-    }
-
-    public function ine()
+    public function ine(): string
     {
         return $this->ine;
     }
